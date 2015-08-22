@@ -8,6 +8,12 @@
 //  This file is just a bootstrap for running solutions
 //
 
+import Foundation
+
+let start = NSDate()
 
 // Eg.
-p50()
+p51()
+
+let time = NSDate().timeIntervalSinceDate(start)
+println("Took \(time) s")

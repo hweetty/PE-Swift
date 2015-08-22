@@ -1,6 +1,6 @@
 //
 // Common Code for Project Euler solutions
-// Version: 2015-08-10
+// Version: 2015-08-21
 // Jerry Yu
 //
 
@@ -32,4 +32,34 @@ public func primesLessThan(n: Int) -> (primes: [Int], lookup: [Bool]) {
     }
 
     return (primes, isPrime)
+}
+
+
+// MARK: Extensions
+
+// Foreach for arrays: http://nicemohawk.com/blog/2014/09/adding-foreach-to-swift-arrays/
+extension Array {
+	func forEach(doThis: (element: T) -> Void) {
+		for e in self {
+			doThis(element: e)
+		}
+	}
+}
+
+// Adding map and filter to Dictionary: http://stackoverflow.com/a/24219069
+extension Dictionary {
+	init(_ pairs: [Element]) {
+		self.init()
+		for (k, v) in pairs {
+			self[k] = v
+		}
+	}
+
+	func map<OutKey: Hashable, OutValue>(transform: Element -> (OutKey, OutValue)) -> [OutKey: OutValue] {
+		return Dictionary<OutKey, OutValue>(Swift.map(self, transform))
+	}
+
+	func filter(includeElement: Element -> Bool) -> [Key: Value] {
+		return Dictionary(Swift.filter(self, includeElement))
+	}
 }
