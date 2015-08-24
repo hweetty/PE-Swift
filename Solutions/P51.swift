@@ -6,6 +6,8 @@
 
 import Foundation
 
+// For each range of primes with `m` digits, inspect those that contain
+// repeating digits and test if has family of size 8.
 func p51(familySize: Int = 8) {
     let n =  10000000
     let (primes, lookup) = primesLessThan(n)
@@ -54,8 +56,8 @@ func p51(familySize: Int = 8) {
 			ans = Array(v.1).reduce(ans, combine: { return Swift.min($0, $1) })
 		}
 		if ans != Int.max {
-			println(ans) // Ans
-			return
+			println(ans)	// Ans: 121313
+			return			// 2013 Air 19s
 		}
 
 		power *= 10

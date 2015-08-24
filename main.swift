@@ -13,7 +13,7 @@ import Foundation
 let start = NSDate()
 
 // Eg.
-p51()
+p50()
 
 let time = NSDate().timeIntervalSinceDate(start)
 println("Took \(time) s")
