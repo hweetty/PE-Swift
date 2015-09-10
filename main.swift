@@ -16,4 +16,4 @@ let start = NSDate()
 p50()
 
 let time = NSDate().timeIntervalSinceDate(start)
-println("Took \(time) s")
+print("Took \(time) s")

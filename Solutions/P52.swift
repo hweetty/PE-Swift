@@ -10,7 +10,7 @@ func p52() {
 	var i = 125874
 	while true {
 		if check(i) {
-			println(i)	// Ans: 142857
+			print(i)	// Ans: 142857
 			return		// 2013 Air 0.35s
 		}
 		i++

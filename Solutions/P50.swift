@@ -29,7 +29,7 @@ func p50(n: Int = 1000000) {
 
             if sum >= n { break }
             else if lookup[sum] {
-                println(sum)	// Ans: 997651
+                print(sum)		// Ans: 997651
                 return			// 2013 Air 1.2s
             }
             sum -= primes[i-m]

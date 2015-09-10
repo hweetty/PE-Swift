@@ -24,18 +24,19 @@ enum Suit: Int {
 
 func p54(filename: String = "p054_poker.txt") {
 	// Set working directory in XCode scheme settings: http://stackoverflow.com/a/15537436
-	let path = NSFileManager.defaultManager().currentDirectoryPath.stringByAppendingPathComponent(filename)
-	let poker = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil)!
+	let path = NSFileManager.defaultManager().currentDirectoryPath + "/\(filename)"
+	let poker = try! String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
 	let hands = poker.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
 
 	var wins = 0 // # of Player 1 wins
 	var gen = hands.generate()
-	for i in 0..<hands.count / 10 {
+	for _ in 0..<hands.count / 10 {
 		let p1 = Hand(gen: &gen), p2 = Hand(gen: &gen)
 		if p1 > p2 { wins++ }
 	}
 
-	println(wins)
+	print(wins)	// Ans: 376
+				// 2013 Air 0.80s
 }
 
 // If comparison is required multiple times, it may be better to convert the rank
@@ -51,7 +52,7 @@ func > (left: Hand, right: Hand) -> Bool {
 			let c1 = left.cards.filter{ return $0 != left.highCardInRank }
 			let c2 = right.cards.filter{ return $0 != right.highCardInRank }
 			precondition(c1.count == c2.count, "# of other cards not the same: \(c1.count) vs. \(c2.count)")
-			for (i, v) in enumerate(c1) {
+			for (i, v) in c1.enumerate() {
 				if v > c2[i] { return true }
 				if v < c2[i] { return false }
 			}
@@ -76,13 +77,13 @@ struct Hand {
 			suits[c.suit.rawValue]++
 			cards.append(c.value)
 		}
-		cards.sort(>)
+		cards.sortInPlace(>)
 
 		let hasFlush = suits.reduce(false) { return $0 || $1 == 5 }
 
 		// Check straight
 		var highestStraight = 15+4, straightCounter = 0
-		for i in reverse(2...14) {
+		for i in Array((2...14).reverse()) {
 			if values[i] > 0 { straightCounter++ }
 			else { straightCounter = 0 }
 
@@ -99,18 +100,18 @@ struct Hand {
 			return
 		}
 
-		let fourOfAKind = Array(enumerate(values)).reduce(0) { return $1.1==4 ?  $1.0:$0 } // Get the card value
+		let fourOfAKind = Array(values.enumerate()).reduce(0) { return $1.1==4 ?  $1.0:$0 } // Get the card value
 		if fourOfAKind > 0 {
 			self.highestRank = .FourOfAKind
 			self.highCardInRank = fourOfAKind
 			// Find the leftover high card
-			self.highCard = Array(enumerate(values)).reduce(0) { return $1.1 == 1 ?  $1.0:$0 }
+			self.highCard = Array(values.enumerate()).reduce(0) { return $1.1 == 1 ?  $1.0:$0 }
 			return
 		}
 
 		// Prepare to check full house, triples, pairs...
 		var pairs = Array<Int>(), triples = Array<Int>()
-		for (i, v) in enumerate(values) {
+		for (i, v) in values.enumerate() {
 			if v == 2 { pairs.append(i) }
 			else if v == 3 { triples.append(i) }
 		}
@@ -128,7 +129,7 @@ struct Hand {
 		if hasFlush { self.highestRank = .Flush }
 		else if hasStraight { self.highestRank = .Straight }
 		if hasFlush || hasStraight {
-			self.highCardInRank = Array(enumerate(values)).reduce(0) { return $1.1==1 ?  $1.0:$0 } // Get highest card
+			self.highCardInRank = Array(values.enumerate()).reduce(0) { return $1.1==1 ?  $1.0:$0 } // Get highest card
 			return
 		}
 
@@ -136,19 +137,19 @@ struct Hand {
 		if triples.count == 1 {
 			self.highestRank = .ThreeOfAKind
 			self.highCardInRank = triples[0]
-			self.highCard = Array(enumerate(values)).reduce(0) { return ($1.1>=1 && $1.1 != 3) ?  $1.0:$0 } // Get highest card
+			self.highCard = Array(values.enumerate()).reduce(0) { return ($1.1>=1 && $1.1 != 3) ?  $1.0:$0 } // Get highest card
 		} else if pairs.count == 2 {
 			self.highestRank = .TwoPair
 			self.highCardInRank = max(pairs[0], pairs[1])
-			self.highCard = Array(enumerate(values)).reduce(0) { return $1.1==1 ?  $1.0:$0 } // Get highest card
+			self.highCard = Array(values.enumerate()).reduce(0) { return $1.1==1 ?  $1.0:$0 } // Get highest card
 		} else if pairs.count == 1 {
 			self.highestRank = .OnePair
 			self.highCardInRank = pairs[0]
 			// Get highest card not used in rank
-			self.highCard = Array(enumerate(values)).reduce(0) { return ($1.1>=1 && $1.0 != pairs[0]) ?  $1.0:$0 }
+			self.highCard = Array(values.enumerate()).reduce(0) { return ($1.1>=1 && $1.0 != pairs[0]) ?  $1.0:$0 }
 		} else {
 			self.highestRank = .HighCard
-			self.highCardInRank = Array(enumerate(values)).reduce(0) { return $1.1==1 ?  $1.0:$0 } // Get highest card
+			self.highCardInRank = Array(values.enumerate()).reduce(0) { return $1.1==1 ?  $1.0:$0 } // Get highest card
 		}
 	}
 }

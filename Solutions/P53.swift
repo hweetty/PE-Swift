@@ -27,6 +27,6 @@ func p53(cutoff: Int = 1000000) {
 		}
 	}
 
-	println(count)	// Ans: 4075
+	print(count)	// Ans: 4075
 					// 2013 Air 0.0050s
 }

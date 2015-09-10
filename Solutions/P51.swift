@@ -33,14 +33,14 @@ func p51(familySize: Int = 8) {
 				let d = primes[i]%10
 
 				set.remove(commonDigit)
-				var str = String(primes[i]).stringByReplacingOccurrencesOfString("\(commonDigit)", withString: "x")
+				let str = String(primes[i]).stringByReplacingOccurrencesOfString("\(commonDigit)", withString: "x")
 				if dict[str] == nil { dict[str] = Set<Int>() }
 				dict[str]!.insert(primes[i])
 
 				// Check the other digits
 				for digit in set {
 					let numStr = str.stringByReplacingOccurrencesOfString("x", withString: "\(digit)")
-					let num = numStr.toInt()!
+					let num = Int(numStr)!
 					if lookup[num] { dict[str]!.insert(num) }
 				}
 			}
@@ -56,7 +56,7 @@ func p51(familySize: Int = 8) {
 			ans = Array(v.1).reduce(ans, combine: { return Swift.min($0, $1) })
 		}
 		if ans != Int.max {
-			println(ans)	// Ans: 121313
+			print(ans)		// Ans: 121313
 			return			// 2013 Air 19s
 		}
 

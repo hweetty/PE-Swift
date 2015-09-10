@@ -9,10 +9,10 @@ import Foundation
 func p55(n: Int = 10000) {
 	var count = 0
 	for i in 1..<n {
-		if recurse(Double(i), 1) { count++ }
+		if recurse(Double(i), iteration: 1) { count++ }
 	}
 
-	println(count)	// AnsL 249
+	print(count)	// Ans 249
 					// 2013 Air 0.017s
 }
 
@@ -23,7 +23,7 @@ func recurse(n: Double, iteration: Int) -> Bool {
 	let rev = reverse(n)
 	let pal = rev + n
 	if pal == reverse(pal) { return false }
-	return recurse(pal, iteration+1)
+	return recurse(pal, iteration: iteration+1)
 }
 
 func reverse(var n: Double) -> Double {

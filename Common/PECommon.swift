@@ -39,7 +39,7 @@ public func primesLessThan(n: Int) -> (primes: [Int], lookup: [Bool]) {
 
 // Foreach for arrays: http://nicemohawk.com/blog/2014/09/adding-foreach-to-swift-arrays/
 extension Array {
-	func forEach(doThis: (element: T) -> Void) {
+	func forEach(doThis: (element: Element) -> Void) {
 		for e in self {
 			doThis(element: e)
 		}
@@ -56,11 +56,11 @@ extension Dictionary {
 	}
 
 	func map<OutKey: Hashable, OutValue>(transform: Element -> (OutKey, OutValue)) -> [OutKey: OutValue] {
-		return Dictionary<OutKey, OutValue>(Swift.map(self, transform))
+		return Dictionary<OutKey, OutValue>(self.map(transform))
 	}
 
 	func filter(includeElement: Element -> Bool) -> [Key: Value] {
-		return Dictionary(Swift.filter(self, includeElement))
+		return Dictionary(self.filter(includeElement))
 	}
 }
 
@@ -69,14 +69,14 @@ extension String
 {
 	subscript(integerIndex: Int) -> Character
 		{
-			let index = advance(startIndex, integerIndex)
+			let index = startIndex.advancedBy(integerIndex)
 			return self[index]
 
 	}
 	subscript(integerRange: Range<Int>) -> String
 		{
-			let start = advance(startIndex, integerRange.startIndex)
-			let end = advance(startIndex, integerRange.endIndex)
+			let start = startIndex.advancedBy(integerRange.startIndex)
+			let end = startIndex.advancedBy(integerRange.endIndex)
 			let range = start..<end
 			return self[range]
 	}
