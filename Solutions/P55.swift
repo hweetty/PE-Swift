@@ -12,7 +12,7 @@ func p55(n: Int = 10000) {
 		if recurse(Double(i), iteration: 1) { count++ }
 	}
 
-	print(count)	// Ans 249
+	print(count)	// Ans: 249
 					// 2013 Air 0.017s
 }
 

@@ -17,6 +17,6 @@ func p56() {
 		}
 	}
 
-	print(ans)	// Ans 972
+	print(ans)	// Ans: 972
 				// 2013 Air 1.02s
 }
