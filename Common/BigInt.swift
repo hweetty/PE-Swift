@@ -35,8 +35,20 @@ struct BigInt: CustomStringConvertible {
 		return str
 	}
 
+	// Returns the sum of each individual digit
 	var digitalSum: Int {
 		return self.digits.reduce(0){ $0 + Int($1) }
+	}
+
+	// Returns the number of digits
+	var numDigits: Int {
+		var count = 0
+		var started = false
+		for v in digits.reverse() {
+			if v > 0 { started = true }
+			if started { count++ }
+		}
+		return count
 	}
 }
 
@@ -50,7 +62,17 @@ func * (lhs: BigInt, n: Int) -> BigInt {
 	}
 	return BigInt(digits: digits)
 }
+func * (n: Int, lhs: BigInt) -> BigInt { return lhs * n }
+func *= (inout lhs: BigInt, n: Int) { lhs = lhs * n }
 
-func *= (inout lhs: BigInt, n: Int) {
-	lhs = lhs * n
+func + (lhs: BigInt, rhs: BigInt) -> BigInt {
+	var carry: UInt8 = 0
+	var d1 = lhs.digits, d2 = rhs.digits
+	for i in 0..<d1.count {
+		carry += d1[i] + d2[i]
+		d1[i] = carry % 10
+		carry /= 10
+	}
+	return BigInt(digits: d1)
 }
+func += (inout lhs: BigInt, rhs: BigInt) { lhs = lhs + rhs }
