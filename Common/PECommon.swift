@@ -1,6 +1,6 @@
 //
 // Common Code for Project Euler solutions
-// Version: 2015-08-21
+// Version: 2015-09-20
 // Jerry Yu
 //
 
@@ -17,7 +17,7 @@ public func primesLessThan(n: Int) -> (primes: [Int], lookup: [Bool]) {
     isPrime[0] = false; isPrime[1] = false
 
     let s = Int( sqrt(Float(n)) ) // Seriously swift?
-    for i in 2..<s {
+    for i in 2...s {
         if isPrime[i] {
 			primes.append(i)
             for var j = i*2; j < n; j += i {
@@ -34,6 +34,21 @@ public func primesLessThan(n: Int) -> (primes: [Int], lookup: [Bool]) {
     return (primes, isPrime)
 }
 
+// http://stackoverflow.com/a/15285588
+func isPrime(n: Int) -> Bool {
+	if n == 2 || n == 3 { return true }
+	if n%2 == 0 || n < 2 { return false }
+	if n < 9 { return true }
+	if n%3 == 0 { return false }
+
+	let s = Int( sqrt(Double(n)) ) // Seriously swift?
+	var a = 5
+	while a <= s {
+		if n%a == 0 || n%(a+2) == 0 { return false }
+		a += 6
+	}
+	return true
+}
 
 // MARK: Extensions
 
